@@ -25,6 +25,7 @@ import ec.satoolkit.diagnostics.QSTest;
 import ec.tstoolkit.data.DataBlock;
 import ec.tstoolkit.eco.Ols;
 import ec.tstoolkit.eco.RegModel;
+import ec.tstoolkit.modelling.DifferencingResults;
 import ec.tstoolkit.modelling.arima.JointRegressionTest;
 import ec.tstoolkit.stats.StatisticalTest;
 import ec.tstoolkit.timeseries.regression.RegressionUtilities;

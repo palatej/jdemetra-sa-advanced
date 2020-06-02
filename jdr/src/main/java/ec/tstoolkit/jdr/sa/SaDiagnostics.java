@@ -469,41 +469,50 @@ public class SaDiagnostics implements IProcResults {
     static {
         MAPPING.set("qs", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    StatisticalTest qs = source.saTests().getQs();
-                    if (qs == null) {
+                    TsData ts = source.sa;
+                    if (ts == null) {
                         return null;
-                    } else {
-                        return ec.tstoolkit.information.StatisticalTest.of(qs);
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.SeasonalityTests.qstest(ts, 0, -1, true);
                 });
 
         MAPPING.set("ftest", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    FTest ftest = new FTest();
-                    if (ftest.test(source.sa)) {
-                        return ec.tstoolkit.information.StatisticalTest.of(ftest.getFTest());
-                    } else {
+                    TsData ts = source.sa;
+                    if (ts == null) {
                         return null;
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.SeasonalityTests.ftest(ts, true, 8);
                 });
 
         MAPPING.set("qs.on.i", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    StatisticalTest qs = source.irrTests().getQs();
-                    if (qs == null) {
+                    TsData ts = source.irr;
+                    if (ts == null) {
                         return null;
-                    } else {
-                        return ec.tstoolkit.information.StatisticalTest.of(qs);
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.SeasonalityTests.qstest(ts, 0, -1, true);
                 });
+
         MAPPING.set("ftest.on.i", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    FTest ftest = new FTest();
-                    if (ftest.test(source.irr)) {
-                        return ec.tstoolkit.information.StatisticalTest.of(ftest.getFTest());
-                    } else {
+                    TsData ts = source.irr;
+                    if (ts == null) {
                         return null;
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.SeasonalityTests.ftest(ts, true, 8);
                 });
 
         MAPPING.delegate("combined.all", CombinedSeasonalityTestInfo.getMapping(), source -> source.csiTest(false));
@@ -518,32 +527,28 @@ public class SaDiagnostics implements IProcResults {
                 -> ec.tstoolkit.information.StatisticalTest.of(source.csaTest(true).getStableSeasonality()));
         MAPPING.set("residualtd", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    TsData s = source.sa;
-                    if (source.mul) {
-                        s = s.log();
-                    }
-                    ec.tstoolkit.stats.StatisticalTest test = tdAr(s);
-                    if (test == null) {
+                    TsData ts = source.sa;
+                    if (ts == null) {
                         return null;
-                    } else {
-                        return ec.tstoolkit.information.StatisticalTest.of(test);
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.TradingDaysTests.ftest(ts, true, 8);
                 });
-        
-        MAPPING.set("residualtd.on.i", ec.tstoolkit.information.StatisticalTest.class, 
+
+        MAPPING.set("residualtd.on.i", ec.tstoolkit.information.StatisticalTest.class,
                 source -> {
-                    TsData s = source.irr;
-                    if (source.mul) {
-                        s = s.log();
-                    }
-                    ec.tstoolkit.stats.StatisticalTest test = tdAr(s);
-                    if (test == null) {
+                    TsData ts = source.irr;
+                    if (ts == null) {
                         return null;
-                    } else {
-                        return ec.tstoolkit.information.StatisticalTest.of(test);
                     }
+                    if (source.mul) {
+                        ts = ts.log();
+                    }
+                    return ec.tstoolkit.jdr.tests.TradingDaysTests.ftest(ts, true, 8);
                 });
-        
+
         MAPPING.set("variancedecomposition", double[].class, source -> source.allVariances());
 
 ////////////////////// LOG/LEVEL
