@@ -43,6 +43,7 @@
         <module>jd_stl</module>
         <module>mtd-core</module>
         <module>jdr</module>
+        <module>nbdemetra-benchmarking</module>
     </modules>
 
     <organization>
